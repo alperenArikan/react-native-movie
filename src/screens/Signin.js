@@ -2,7 +2,12 @@ import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
+import {login} from '../store/AuthSlice';
+import {useSelector, useDispatch} from 'react-redux';
 const Signin = ({navigation}) => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector(state => state.Auth.currentUser);
+
   const [form, setForm] = React.useState({
     email: '',
     password: '',
@@ -17,6 +22,10 @@ const Signin = ({navigation}) => {
       [input]: text,
     });
   };
+  const handleLogin = () => {
+    dispatch(login(form));
+  };
+
   return (
     <View style={styles.root}>
       <Text style={styles.header}>Signin</Text>
@@ -40,6 +49,9 @@ const Signin = ({navigation}) => {
         style={styles.button}
         onPress={() => navigation.navigate('Main')}>
         <Text style={styles.buttonText}>SUBMIT</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.text}>Create an account</Text>

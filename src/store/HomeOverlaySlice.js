@@ -24,7 +24,6 @@ export const getOverlayMovie = createAsyncThunk(
 export const getOverlayTv = createAsyncThunk(
   'OverlayMovie/getOverlayTv',
   async (id, {dispatch}) => {
-    console.log(id);
     const response = await axios.get(
       `${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=en-US`,
     );

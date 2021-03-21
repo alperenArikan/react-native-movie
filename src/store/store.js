@@ -4,6 +4,8 @@ import OverlayMovie from './HomeOverlaySlice';
 import DiscoverMovies from './DiscoverSlice';
 import TrendingTv from './TrendingTvSlice';
 import SimilarMovies from './SimilarMovies';
+import MovieCredits from './CreditsSlice';
+import Auth from './AuthSlice';
 const reducer = configureStore({
   reducer: {
     TrendingMovies,
@@ -11,6 +13,8 @@ const reducer = configureStore({
     DiscoverMovies,
     TrendingTv,
     SimilarMovies,
+    MovieCredits,
+    Auth,
   },
 });
 

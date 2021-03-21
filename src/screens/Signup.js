@@ -3,8 +3,10 @@ import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Input} from 'react-native-elements';
 import {Button} from 'react-native-elements';
-
+import {sign} from '../store/AuthSlice';
+import {useSelector, useDispatch} from 'react-redux';
 const Signup = ({navigation}) => {
+  const dispatch = useDispatch();
   navigation.setOptions({
     header: () => false,
   });
@@ -18,6 +20,10 @@ const Signup = ({navigation}) => {
       ...form,
       [input]: text,
     });
+  };
+
+  const handleSignUp = () => {
+    dispatch(sign(form));
   };
 
   return (
@@ -47,7 +53,7 @@ const Signup = ({navigation}) => {
         placeholderTextColor="#700"
         leftIcon={<Icon name="lock" size={24} color="#a00" />}
       />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>SUBMIT</Text>
       </TouchableOpacity>
 

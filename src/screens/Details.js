@@ -11,6 +11,8 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 import useOverlay from '../hooks/useOverlay';
 import HomeScreenOverlay from '../components/HomeScreenOverlay';
+import {getMovieCredits} from '../store/CreditsSlice';
+import CastCard from '../components/CastCard';
 const Details = ({route, navigation}) => {
   const {id, type, data} = route.params;
   const {
@@ -21,11 +23,13 @@ const Details = ({route, navigation}) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getSimilarMovies(id));
-  }, [data]);
+    dispatch(getMovieCredits(id));
+  }, [data, dispatch, id]);
   const similarMoviesData = useSelector(SelectAllSimilarMovies);
   const OverlayData = useSelector(state => state.OverlayMovie.movie);
   const OverlayDataType = useSelector(state => state.OverlayMovie.type);
-  console.log(id);
+  const CreditsData = useSelector(state => state.MovieCredits.credits);
+
   return (
     <>
       <ScrollView>
@@ -36,7 +40,6 @@ const Details = ({route, navigation}) => {
               uri: `https://image.tmdb.org/t/p/w342${data?.backdrop_path}`,
             }}
           />
-
           <Image
             style={styles.Image}
             source={{
@@ -56,7 +59,7 @@ const Details = ({route, navigation}) => {
               }}>
               <Text style={styles.info}>
                 {moment(data.release_date).format('DD/MM/YYYY')}
-                {` - `}
+
                 {data.status}
               </Text>
               <Text>
@@ -70,7 +73,7 @@ const Details = ({route, navigation}) => {
               </Text>
             </View>
           </View>
-          <Text style={styles.mainTitles}>You May Like These</Text>
+          <Text style={styles.title}>You May Like These</Text>
           <FlatList
             style={styles.list}
             horizontal
@@ -80,6 +83,28 @@ const Details = ({route, navigation}) => {
               <MovieCard overlayHandler={overlayOpenHandler} data={item} />
             )}
             keyExtractor={item => item.id}
+          />
+          <Text style={styles.title}>Cast</Text>
+          <FlatList
+            style={styles.list}
+            horizontal
+            data={CreditsData.cast}
+            overlayHandler={overlayOpenHandler}
+            renderItem={({item}) => (
+              <CastCard overlayHandler={overlayOpenHandler} data={item} />
+            )}
+            keyExtractor={item => item.id + Math.random()}
+          />
+          <Text style={styles.title}>Crew</Text>
+          <FlatList
+            style={styles.list}
+            horizontal
+            data={CreditsData.crew}
+            overlayHandler={overlayOpenHandler}
+            renderItem={({item}) => (
+              <CastCard overlayHandler={overlayOpenHandler} data={item} />
+            )}
+            keyExtractor={item => item.id + Math.random()}
           />
         </View>
       </ScrollView>

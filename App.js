@@ -23,12 +23,15 @@ import Search from './src/screens/Search';
 import Profile from './src/screens/Profile';
 import store from './src/store/store';
 import {Provider} from 'react-redux';
+import {useSelector} from 'react-redux';
+
 const Auth = ({navigation}) => {
   navigation.setOptions({
     header: () => false,
   });
 
   const Stack = createStackNavigator();
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="Signup" component={Signup} />
@@ -72,26 +75,37 @@ const Main = ({navigation}) => {
   );
 };
 
-const App = () => {
+const Navigation = () => {
   const Stack = createStackNavigator();
+  const currentUser = useSelector(state => state.Auth.currentUser);
+  console.log(currentUser);
+
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {!currentUser ? (
+            <Stack.Screen name="Auth" component={Auth} />
+          ) : (
+            <>
+              <Stack.Screen name="Main" component={Main} />
+
+              <Stack.Screen name="Search" component={Search} />
+              <Stack.Screen name="Details" component={Details} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+const App = () => {
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Auth" component={Auth} />
-
-            <Stack.Screen name="Main" component={Main} />
-
-            <Stack.Screen name="Search" component={Search} />
-            <Stack.Screen name="Details" component={Details} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <Navigation />
     </Provider>
   );
 };
-
 const styles = StyleSheet.create({});
 
 export default App;

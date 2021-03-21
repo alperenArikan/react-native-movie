@@ -31,9 +31,7 @@ const slice = createSlice({
       state.trendingMoviesLoading = true;
     },
     [getTrendingTv.fulfilled]: adapter.setAll,
-    [getTrendingTv.rejected]: () => {
-      console.log('rejected');
-    },
+    [getTrendingTv.rejected]: () => {},
   },
 });
 
